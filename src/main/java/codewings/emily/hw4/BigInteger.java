@@ -1,36 +1,58 @@
 package codewings.emily.hw4;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class BigInteger {
-    public static void main(String[] args) throws IOException {
-        // Skeleton code for reading long integer as a String and handle operation (+ or -)
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
-            String intA = reader.readLine();
-            String operation = reader.readLine();
-            String intB = reader.readLine();
+    private int[] backend = new int[1001];
 
-            switch(operation) {
-                case "+":
-                    System.out.println(add(intA, intB));
-                    break;
-                case "-":
-                    System.out.println(subtract(intA, intB));
-                    break;
+    public static BigInteger of(String str) {
+        BigInteger bigint = new BigInteger();
+        for (int i = 0; i < str.length(); i++)
+            bigint.backend[i] = str.charAt(str.length() - i - 1) - '0';
+        return bigint;
+    }
+
+    public static BigInteger add(BigInteger a, BigInteger b) {
+        BigInteger c = new BigInteger();
+        for (int i = 0; i < c.backend.length; i++) {
+            c.backend[i] = a.backend[i] + b.backend[i];
+        }
+        c.adjustCarry();
+        return c;
+    }
+
+    public static BigInteger subtract(BigInteger a, BigInteger b) {
+        BigInteger c = new BigInteger();
+        for (int i = 0; i < c.backend.length; i++) {
+            c.backend[i] = a.backend[i] - b.backend[i];
+        }
+        c.adjustBorrow();
+        return c;
+    }
+
+    public void adjustCarry() {
+        for (int i = 0; i < backend.length; i++) {
+            while (backend[i] >= 10) {
+                backend[i + 1]++;
+                backend[i] -= 10;
             }
         }
-
     }
 
-    private static String add(String input1, String input2) {
-        // TODO: Implement it
-        return Integer.toString(Integer.parseInt(input1) + Integer.parseInt(input2));
+    public void adjustBorrow() {
+        for (int i = 0; i < backend.length; i++) {
+            while (backend[i] < 0) {
+                backend[i + 1]--;
+                backend[i] += 10;
+            }
+        }
     }
 
-    private static String subtract(String input1, String input2) {
-        // TODO: Implement it
-        return Integer.toString(Integer.parseInt(input1) - Integer.parseInt(input2));
+    public void print() {
+        for (int i = backend.length - 1; i >= backend.length; i--) {
+            System.out.print(backend[i]);
+        }
+        System.out.println();
     }
 }
+
+
