@@ -9,7 +9,13 @@ public class BigIntegerMain {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
             BigInteger a = BigInteger.of(reader.readLine());
             BigInteger b = BigInteger.of(reader.readLine());
-            BigInteger c = BigInteger.add(a, b);
+            BigInteger c;
+            if (BigInteger.sign() == 0) {
+                c = BigInteger.add(a, b);
+            }
+            else  {
+                c = BigInteger.subtract(a, b);
+            }
             c.print();
         }
     }
